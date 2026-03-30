@@ -1,6 +1,7 @@
 # Unimed — Sistema de Agendamento (Microfrontends)
 
 > **Stack:** React 18 · Vite 5 · Tailwind CSS 3 · Module Federation (`@originjs/vite-plugin-federation`)
+> **URL do site na Azure:** https://green-tree-0b090ca0f.2.azurestaticapps.net
 
 ---
 
@@ -106,88 +107,7 @@ unimed-mfe/
 
 ---
 
-## 5. Exemplos de Configuração
-
-### Shell — `vite.config.ts`
-```ts
-federation({
-  name: 'shell',
-  remotes: {
-    mfeAgendamento: 'http://localhost:5001/assets/remoteEntry.js',
-    mfeNotificacao: 'http://localhost:5002/assets/remoteEntry.js',
-  },
-  shared: ['react', 'react-dom', 'react-router-dom'],
-})
-```
-
-### MFE Remote — `vite.config.ts`
-```ts
-federation({
-  name: 'mfeAgendamento',
-  filename: 'remoteEntry.js',
-  exposes: { './App': './src/App' },
-  shared: ['react', 'react-dom', 'react-router-dom'],
-})
-```
-
-### Carregamento federado no Shell
-```tsx
-const AgendamentoApp = lazy(() => import('mfeAgendamento/App'))
-const NotificacaoApp = lazy(() => import('mfeNotificacao/App'))
-
-<Suspense fallback={<Loader />}>
-  <Routes>
-    <Route path="/agendamento/*" element={<AgendamentoApp />} />
-    <Route path="/notificacoes/*" element={<NotificacaoApp />} />
-  </Routes>
-</Suspense>
-```
-
-### Declaração de tipos TypeScript (`remotes.d.ts`)
-```ts
-declare module 'mfeAgendamento/App' {
-  const App: React.ComponentType
-  export default App
-}
-declare module 'mfeNotificacao/App' {
-  const App: React.ComponentType
-  export default App
-}
-```
-
----
-
-## 6. Como executar localmente
-
-> **Pré-requisito:** Node.js 18+ e npm 9+
-
-### Instalar dependências (em cada pasta)
-
-```bash
-# Terminal 1 — Shell
-cd shell && npm install && npm run dev
-
-# Terminal 2 — MFE Agendamento
-cd mfe-agendamento && npm install && npm run dev
-
-# Terminal 3 — MFE Notificação
-cd mfe-notificacao && npm install && npm run dev
-```
-
-### Acessar
-
-| URL | O que abre |
-|-----|-----------|
-| http://localhost:5000 | Aplicação completa (Shell + MFEs) |
-| http://localhost:5001 | MFE Agendamento isolado |
-| http://localhost:5002 | MFE Notificação isolado |
-
-> **Importante:** em desenvolvimento, o Module Federation usa os remotes em `http://localhost:500X`.  
-> Em produção, substitua as URLs pelos endereços de deploy de cada MFE no `vite.config.ts` do Shell.
-
----
-
-## 7. Telas por Domínio
+## 5. Telas por Domínio
 
 ### Shell
 | Rota | Tela |
@@ -209,24 +129,3 @@ cd mfe-notificacao && npm install && npm run dev
 | `/notificacoes` | Histórico com filtros por canal e status |
 | `/notificacoes/preferencias` | Toggles de canal por tipo de evento |
 | `/notificacoes/templates` | Edição de templates por evento e canal |
-
----
-
-## 8. Boas Práticas Aplicadas
-
-### Organização por domínio
-Cada MFE é uma unidade de deploy independente. Mudanças no domínio de Notificação não impactam o Shell ou o Agendamento.
-
-### Compartilhamento de componentes
-Bibliotecas core (`react`, `react-dom`, `react-router-dom`) são declaradas como `shared` no Module Federation, garantindo uma única instância em runtime — evita o problema do "React múltiplo".
-
-### Comunicação entre MFEs
-Prefira **URL state** (parâmetros de rota) e **Custom Events** do browser para comunicação entre MFEs. Evite compartilhar estado via store global na versão inicial — introduza apenas se houver necessidade comprovada.
-
-### Autenticação
-O Shell é o único responsável por autenticação (OAuth 2.0 / SSO). O token JWT deve ser armazenado em memória ou cookie `httpOnly` e repassado aos MFEs via `Context` ou cabeçalho HTTP nas chamadas de API — nunca via `localStorage`.
-
-### Estratégia para evolução
-- Cada MFE tem seu próprio `package.json` e ciclo de release independente.
-- Adicionar um novo domínio (ex: `mfe-relatorios`) é tão simples quanto criar uma nova pasta, declarar o remote no Shell e adicionar a rota.
-- Para produção, use um CDN (ex: CloudFront) para servir cada `remoteEntry.js` com cache adequado.
