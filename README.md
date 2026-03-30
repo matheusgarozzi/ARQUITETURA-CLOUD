@@ -24,8 +24,8 @@ A solução é composta por **três aplicações Vite independentes** que colabo
                         │         Browser              │
                         └──────────────┬──────────────┘
                                        │
-                        ┌──────────────▼──────────────┐
-                        │   Shell (Host) — porta 5000  │
+                        ┌──────────────▼────────────── ┐
+                        │   Shell (Host)               │
                         │  ┌─────────────────────────┐ │
                         │  │  Layout (Sidebar+Header) │ │
                         │  │  BrowserRouter           │ │
@@ -35,9 +35,9 @@ A solução é composta por **três aplicações Vite independentes** que colabo
                  ┌───────────────────┼──────────────────┐
                  ▼                                       ▼
   ┌──────────────────────────┐         ┌──────────────────────────┐
-  │  mfe-agendamento (5001)  │         │  mfe-notificacao  (5002)  │
-  │  expõe: ./App            │         │  expõe: ./App             │
-  │  rotas: /agendamento/*   │         │  rotas: /notificacoes/*   │
+  │  mfe-agendamento         │         │  mfe-notificacao         │
+  │  expõe: ./App            │         │  expõe: ./App            │
+  │  rotas: /agendamento/*   │         │  rotas: /notificacoes/*  │
   └──────────────────────────┘         └──────────────────────────┘
 ```
 
