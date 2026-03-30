@@ -10,7 +10,7 @@
 A solução é composta por **três aplicações Vite independentes** que colaboram em tempo de execução via **Module Federation**:
 
 | App | Papel |
-|------------|
+|-----|-------|
 | `shell` |  Host/orquestrador — layout, roteamento global, autenticação |
 | `mfe-agendamento` | Remote — Domínio de Agendamento |
 | `mfe-notificacao` | Remote — Domínio de Notificação e Comunicação |
