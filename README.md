@@ -3,7 +3,7 @@
 > **Stack:** React 18 · Vite 5 · Tailwind CSS 3 · Module Federation (`@originjs/vite-plugin-federation`)
 
 ---
-**URL do site na Azure:** https://green-tree-0b090ca0f.2.azurestaticapps.net
+**URL do site na Azure:** https://lively-flower-0baca9210.4.azurestaticapps.net/
 
 ## 1. Visão Geral da Solução
 
